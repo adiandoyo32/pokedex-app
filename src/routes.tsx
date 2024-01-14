@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '@/App'
-import HomePage from '@/pages/Home'
-import List from './pages/List'
+import Pokemon from '@/pages/Pokemon'
 
 export const router = createBrowserRouter([
   {
@@ -9,11 +8,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <HomePage />
-      },
-      {
-        path: '/list',
-        element: <List />
+        element: <Pokemon />
       }
     ]
   }
