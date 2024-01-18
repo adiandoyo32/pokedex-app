@@ -10,7 +10,8 @@
         "plugin:react-hooks/recommended",
         "plugin:react/recommended",
         "prettier",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+        "plugin:tailwindcss/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -22,7 +23,8 @@
         "react",
         "react-hooks",
         "react-refresh",
-        "prettier"
+        "prettier",
+        "tailwindcss"
     ],
     "rules": {
       // existing rules
