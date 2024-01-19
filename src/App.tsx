@@ -1,12 +1,12 @@
-import { Outlet } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
 import './App.css'
 import client from '@/graphql'
+import Routes from '@/routes'
 
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Outlet />
+      <Routes />
     </ApolloProvider>
   )
 }

@@ -1,15 +1,14 @@
-import { createBrowserRouter } from 'react-router-dom'
-import App from '@/App'
+import { Route, Routes as AppRoutes } from 'react-router-dom'
 import Pokemon from '@/pages/Pokemon'
+import PokemonDetail from '@/pages/PokemonDetail'
 
-export const router = createBrowserRouter([
-  {
-    element: <App />,
-    children: [
-      {
-        path: '/',
-        element: <Pokemon />
-      }
-    ]
-  }
-])
+const Routes = () => {
+  return (
+    <AppRoutes>
+      <Route path="/" element={<Pokemon />} />
+      <Route path="/pokemon/:id--:name" element={<PokemonDetail />} />
+    </AppRoutes>
+  )
+}
+
+export default Routes
