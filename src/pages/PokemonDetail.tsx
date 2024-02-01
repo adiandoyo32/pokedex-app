@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { app } from '@/config'
 import { GET_POKEMON_BY_NAME } from '@/graphql/queries/getPokemonByName'
 import { useQuery } from '@apollo/client'
@@ -43,7 +42,6 @@ const PokemonDetail = () => {
           <img width={250} src={app.sprite.genV(data?.pokemon.id)} />
           <img width={250} src={app.sprite.genVAnimated(data?.pokemon.id)} />
         </div>
-        {/* <PokemonEvolution /> */}
       </div>
     </div>
   )
