@@ -44,7 +44,7 @@
     "vite": "^5.0.8"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "*.{ts,tsx}": [
       "prettier --config .prettierrc --write",
       "eslint --max-warnings 0"
     ]
