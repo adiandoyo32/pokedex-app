@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-const GET_POKEMON_LIST = gql`
+const GET_POKEMONS = gql`
   query getPokemonList($limit: Int, $offset: Int) {
     pokemons(limit: $limit, offset: $offset) {
       count
@@ -14,4 +14,4 @@ const GET_POKEMON_LIST = gql`
   }
 `
 
-export { GET_POKEMON_LIST }
+export { GET_POKEMONS }
