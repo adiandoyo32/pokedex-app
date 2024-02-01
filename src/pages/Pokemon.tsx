@@ -1,4 +1,4 @@
-import { GET_POKEMON_LIST } from '@/graphql/queries/getPokemonList'
+import { GET_POKEMONS } from '@/graphql/queries/getPokemons'
 import { useQuery } from '@apollo/client'
 import PokemonList from '@/components/PokemonList'
 
@@ -8,14 +8,14 @@ const Pokemon = () => {
     loading: isLoading,
     error: isError,
     data
-  } = useQuery(GET_POKEMON_LIST, {
+  } = useQuery(GET_POKEMONS, {
     variables: gqlVariables
   })
 
   const results = data?.pokemons || []
 
   return (
-    <div>
+    <div className="flex flex-wrap">
       {isLoading && <p>Loading...</p>}
       {isError && <p>Error</p>}
       {results && <PokemonList data={results} />}
