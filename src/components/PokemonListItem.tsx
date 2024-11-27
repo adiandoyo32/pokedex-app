@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
 
-const PokemonListtem = ({ id, name, image }: Pokemon.Pokemon) => {
-  const pokemonDetailPath = `/pokemon/${id}--${name}`
+const PokemonListItem = ({ species, sprite }: any) => {
+  const pokemonDetailPath = `/pokemon/${species}--${species}`
 
   return (
     <Link to={pokemonDetailPath} className="flex flex-col border-2 p-2">
-      <div className="text-3xl">{id}</div>
-      <p className="text-red-400">{name}</p>
-      <img src={image} alt={name} />
+      <div className="text-3xl">{species}</div>
+      <p className="text-red-400">{species}</p>
+      <img src={sprite} alt={species} />
     </Link>
   )
 }
 
-export default PokemonListtem
+export default PokemonListItem

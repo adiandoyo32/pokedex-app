@@ -1,16 +1,17 @@
-import PokemonListtem from '@/components/PokemonListItem'
+import PokemonListItem from '@/components/PokemonListItem'
+import { Pokemon } from '@favware/graphql-pokemon'
 
 type Props = {
-  data?: Pokemon.PokemonList
+  data?: readonly Pokemon[]
 }
 
 const PokemonList: React.FC<Props> = ({ data }) => {
-  const pokemonsList = data?.results || []
+  const pokemonsList = data || []
 
   return (
     <>
-      {pokemonsList.map((pokemon: Pokemon.Pokemon) => (
-        <PokemonListtem key={pokemon.id} {...pokemon} />
+      {pokemonsList.map((pokemon: any) => (
+        <PokemonListItem key={pokemon.species} {...pokemon} />
       ))}
     </>
   )
