@@ -21,9 +21,23 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 //   }
 // })
 
-const cache = new InMemoryCache()
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        // eslint-disable-next-line camelcase
+        pokemon_v2_pokemonspecies: {
+          keyArgs: [],
+          merge(_, incoming) {
+            return [...incoming]
+          }
+        }
+      }
+    }
+  }
+})
 const link = new HttpLink({
-  uri: 'https://graphqlpokemon.favware.tech/v8'
+  uri: 'https://beta.pokeapi.co/graphql/v1beta'
 })
 
 const client = new ApolloClient({

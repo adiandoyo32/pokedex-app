@@ -1,42 +1,50 @@
 declare namespace Pokemon {
   type PokemonList = {
-    count: number
-    next?: string | null
-    previous?: string | null
-    nextOffset?: number | null
-    prevOffset?: number | null
-    results: []
-    status: boolean
-    message?: string
+    pokemons: []
   }
 
   type Pokemon = {
-    id?: number
-    url?: string
+    id: number
     name: string
-    image?: string
+    pokemons: [
+      {
+        sprites: Sprites[]
+        types: Types[]
+      }
+    ]
+  }
+
+  type Sprites = {
+    sprites: string
+  }
+
+  type Types = {
+    type: {
+      name: string
+    }
   }
 
   type PokemonDetail = {
-    abilities?: Ability[]
-    base_experience?: number
-    forms?: Pokemon[]
-    game_indices?: GameIndex[]
-    height?: number
-    held_items?: HeldItem[]
-    id?: number
-    is_default?: boolean
-    location_area_encounters?: string
-    moves?: Move[]
-    name?: string
-    order?: number
-    species?: Pokemon
-    sprites?: Sprite
-    stats?: Stat[]
-    types?: Type[]
-    weight?: number
-    status?: boolean
-    message?: string
+    pokemon: {
+      id: number
+      name: string
+      moves: Move[]
+      sprites: Sprites[]
+      stats: Stat[]
+    }
+  }
+
+  type Move = {
+    move: {
+      name: string
+    }
+  }
+
+  type Stat = {
+    base_stat: number
+    stat: {
+      name: string
+    }
   }
 
   type PokemonSpecies = {

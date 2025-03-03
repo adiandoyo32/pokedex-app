@@ -1,47 +1,33 @@
-import { GET_POKEMON_BY_NAME } from '@/graphql/queries/getPokemonByName'
+import { GET_POKEMON_BY_ID } from '@/graphql/queries/getPokemonById'
 import { useQuery } from '@apollo/client'
-// import ApolloClient from '@apollo/client'
-// import { getDataViaApi } from '@/utils/http-api'
-import type { Query } from '@favware/graphql-pokemon'
-
-type GraphQLPokemonResponse<K extends keyof Omit<Query, '__typename'>> = Record<
-  K,
-  Query[K]
->
+import { useParams } from 'react-router-dom'
+import MoveList from '@/components/pokemon-detail/MoveList'
+import Stat from '@/components/pokemon-detail/Stat'
 
 const PokemonDetail = () => {
-  const gqlVariables = { pokemon: 'dragonite' }
+  const params = useParams()
+
+  const gqlVariables = { id: params.id }
   const {
     loading: isLoading,
     error: isError,
     data
-  } = useQuery<GraphQLPokemonResponse<'getPokemon'>>(GET_POKEMON_BY_NAME, {
+  } = useQuery<Pokemon.PokemonDetail>(GET_POKEMON_BY_ID, {
     variables: gqlVariables
   })
-
-  // const {
-  //   data: { GET_POKEMON_BY_NAME: pokemonData }
-  // } = await ApolloClient.query({
-  //   query: GET_POKEMON_BY_NAME,
-  //   variables: { pokemon: 'dragonite' }
-  // });
-
-  // const getPokemonSpecies = async (pokemon: Pokemon.PokemonDetail) => {
-  //   if (pokemon.species?.url) {
-  //     getDataViaApi<Pokemon.PokemonSpecies>(pokemon.species?.url).then(res => {
-  //       console.log('🚀 ~ getPokemonSpecies ~ res:', res.body)
-  //     })
-  //   }
-  // }
 
   if (isLoading) return <p>Loading...</p>
   if (isError) return <p>Error...</p>
 
+  const sprites = data?.pokemon.sprites[0].sprites ?? ({} as any)
+  const moves = data?.pokemon.moves ?? []
+  const stats = data?.pokemon.stats ?? []
+
   return (
     <div>
       <div>
-        {JSON.stringify(data?.getPokemon.species)}
-        <img width={550} src={data?.getPokemon.sprite} />
+        {JSON.stringify(stats)}
+        <img width={550} src={sprites.other.home.front_default} />
         {/* Name: {data.pokemon.name}
         link: {data.pokemon.species.url}
         <div className="flex flex-wrap">
@@ -54,6 +40,8 @@ const PokemonDetail = () => {
           <img width={250} src={app.sprite.genVAnimated(data?.pokemon.id)} />
         </div> */}
       </div>
+      {/* <MoveList moves={moves} /> */}
+      <Stat stats={stats} />
     </div>
   )
 }
