@@ -17,7 +17,7 @@ const GET_POKEMONS = gql`
       pokemons: pokemon_v2_pokemons {
         name
         sprites: pokemon_v2_pokemonsprites {
-          sprites(path: "versions.generation-vi.x-y.front_default")
+          sprites(path: "versions.generation-v.black-white.front_default")
         }
         types: pokemon_v2_pokemontypes {
           type: pokemon_v2_type {

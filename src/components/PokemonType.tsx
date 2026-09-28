@@ -11,12 +11,16 @@ const PokemonType: React.FC<Props> = ({ types }) => {
   }
 
   return (
-    <div className="flex gap-1">
+    <div className="type-badges">
       {types.map(e => (
         <span
-          style={{ backgroundColor: pokemonTypeColor(e.type.name) }}
-          className="rounded p-1 text-xs font-medium capitalize text-slate-700"
           key={e.type.name}
+          className="type-badge"
+          style={
+            {
+              '--badge-color': pokemonTypeColor(e.type.name)
+            } as React.CSSProperties
+          }
         >
           {e.type.name}
         </span>

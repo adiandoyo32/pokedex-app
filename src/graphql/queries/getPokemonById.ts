@@ -33,7 +33,8 @@ const GET_POKEMON_BY_ID = gql`
       }
       pokemon_v2_pokemonspecy {
         pokemon_v2_evolutionchain {
-          pokemon_v2_pokemonspecies {
+          pokemon_v2_pokemonspecies(order_by: { id: asc }) {
+            id
             name
           }
         }

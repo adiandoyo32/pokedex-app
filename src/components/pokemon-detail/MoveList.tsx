@@ -1,18 +1,24 @@
-import MoveListItem from '@/components/pokemon-detail/MoveListItem'
-
 type Props = {
   moves: Pokemon.Move[]
 }
 
 const MoveList: React.FC<Props> = ({ moves }) => {
+  // Show at most 30 moves
+  const displayed = moves.slice(0, 30)
+
   return (
-    <>
-      <div>
-        {moves.map((move, index) => {
-          return <MoveListItem {...move} key={index} />
-        })}
-      </div>
-    </>
+    <div className="moves-grid">
+      {displayed.map((move, index) => (
+        <span key={index} className="move-chip">
+          {move.move.name.replace(/-/g, ' ')}
+        </span>
+      ))}
+      {moves.length > 30 && (
+        <span className="move-chip move-chip-more">
+          +{moves.length - 30} more
+        </span>
+      )}
+    </div>
   )
 }
 
