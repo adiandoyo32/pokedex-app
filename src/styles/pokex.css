@@ -1,0 +1,48 @@
+/* ═══════════════════════════════════════════════════════════════════
+   POKEX — Duo design tokens
+   Components style themselves with Tailwind utilities (`bg-pkx-surface`,
+   `text-pkx-ink3`, …, see tailwind.config.js). Those utilities read the
+   variables below; `data-theme="dark"` on a `.pkx` root swaps the palette.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.pkx {
+  --pkx-bg: #f5f7fb;
+  --pkx-surface: #ffffff;
+  --pkx-surface2: #eef1f7;
+  --pkx-ink: #101631;
+  --pkx-ink2: #535a73;
+  --pkx-ink3: #8a90a4;
+  --pkx-line: rgba(16, 22, 49, 0.08);
+  --pkx-track: rgba(16, 22, 49, 0.07);
+  --pkx-field-line: rgba(16, 22, 49, 0.05);
+  --pkx-card-line: transparent;
+  --pkx-card-shadow: 0 6px 22px rgba(16, 22, 49, 0.06);
+  --pkx-pop-shadow: 0 18px 40px rgba(16, 22, 49, 0.14);
+
+  --pkx-duo-ink: #15172b;
+  --pkx-duo-ink2: rgba(21, 23, 43, 0.62);
+  --pkx-duo-edge: inset 0 0 0 1px rgba(21, 23, 43, 0.04);
+  --pkx-duo-ball: 0.7;
+
+  /* Cards never stretch past the design width (~312px at 1280) */
+  --pkx-card-max: 320px;
+}
+
+.pkx[data-theme='dark'] {
+  --pkx-bg: #0f111a;
+  --pkx-surface: #1a1d29;
+  --pkx-surface2: #252939;
+  --pkx-ink: #f1f3fa;
+  --pkx-ink2: #a9aec0;
+  --pkx-ink3: #7c8298;
+  --pkx-line: rgba(255, 255, 255, 0.08);
+  --pkx-track: rgba(255, 255, 255, 0.08);
+  --pkx-field-line: rgba(255, 255, 255, 0.08);
+  --pkx-card-line: rgba(255, 255, 255, 0.08);
+  --pkx-card-shadow: none;
+
+  --pkx-duo-ink: #ffffff;
+  --pkx-duo-ink2: rgba(255, 255, 255, 0.72);
+  --pkx-duo-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --pkx-duo-ball: 0.07;
+}

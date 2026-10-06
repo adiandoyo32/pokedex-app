@@ -1,32 +1,47 @@
 import { gql } from '@apollo/client'
 
-// versions.generation-vii.ultra-sun-ultra-moon.front_default
-
 const GET_POKEMONS = gql`
-  query getAllPokemon($limit: Int, $generation: String, $name: String) {
-    pokemons: pokemon_v2_pokemonspecies(
-      where: {
-        pokemon_v2_generation: { name: { _eq: $generation } }
-        _or: { name: { _regex: $name } }
+  query getAllPokemon(
+    $where: pokemon_v2_pokemonspecies_bool_exp
+    $orderBy: [pokemon_v2_pokemonspecies_order_by!]
+    $limit: Int
+    $offset: Int
+  ) {
+    filtered: pokemon_v2_pokemonspecies_aggregate(where: $where) {
+      aggregate {
+        count
       }
-      order_by: { id: asc }
-      limit: 30
+    }
+    pokemons: pokemon_v2_pokemonspecies(
+      where: $where
+      order_by: $orderBy
+      limit: $limit
+      offset: $offset
     ) {
       name
       id
-      pokemons: pokemon_v2_pokemons {
-        name
-        sprites: pokemon_v2_pokemonsprites {
-          sprites(path: "versions.generation-v.black-white.front_default")
-        }
-        types: pokemon_v2_pokemontypes {
+      pokemons: pokemon_v2_pokemons(where: { is_default: { _eq: true } }) {
+        types: pokemon_v2_pokemontypes(order_by: { slot: asc }) {
           type: pokemon_v2_type {
             name
           }
+        }
+        stats: pokemon_v2_pokemonstats(order_by: { stat_id: asc }) {
+          base_stat
         }
       }
     }
   }
 `
 
-export { GET_POKEMONS }
+const GET_POKEMON_COUNT = gql`
+  query getPokemonCount {
+    total: pokemon_v2_pokemonspecies_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+export { GET_POKEMONS, GET_POKEMON_COUNT }

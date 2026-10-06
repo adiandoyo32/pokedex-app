@@ -13,6 +13,11 @@
         "plugin:prettier/recommended",
         "plugin:tailwindcss/recommended"
     ],
+    "settings": {
+        "tailwindcss": {
+            "whitelist": ["pkx"]
+        }
+    },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",

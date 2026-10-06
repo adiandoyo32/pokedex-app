@@ -27,9 +27,10 @@ const cache = new InMemoryCache({
       fields: {
         // eslint-disable-next-line camelcase
         pokemon_v2_pokemonspecies: {
-          keyArgs: [],
-          merge(_, incoming) {
-            return [...incoming]
+          keyArgs: ['where', 'order_by'],
+          merge(existing = [], incoming, { args }) {
+            const offset = args?.offset ?? 0
+            return [...existing.slice(0, offset), ...incoming]
           }
         }
       }
