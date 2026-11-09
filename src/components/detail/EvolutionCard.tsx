@@ -67,15 +67,22 @@ type Props = {
   currentId: number
   /** Called before following a link to another species in the chain. */
   onSelect?: (id: number) => void
+  /** Flat layout (design 5d): slightly smaller sprite circles. */
+  flat?: boolean
 }
 
-const EvolutionCard: React.FC<Props> = ({ chain, currentId, onSelect }) => {
+const EvolutionCard: React.FC<Props> = ({
+  chain,
+  currentId,
+  onSelect,
+  flat
+}) => {
   const stages = toStages(chain)
   // Wide branches (Eevee) stack stages vertically with a downward arrow.
   const branching = stages.some(stage => stage.length > 3)
 
   return (
-    <DetailCard title="Evolution">
+    <DetailCard title="Evolution" className={flat ? 'gap-3.5' : ''}>
       <div
         className={`flex items-center justify-center gap-5 max-sm:gap-3 ${
           branching ? 'flex-col' : 'flex-wrap'
@@ -104,7 +111,7 @@ const EvolutionCard: React.FC<Props> = ({ chain, currentId, onSelect }) => {
                     onClick={() => !current && onSelect?.(sp.id)}
                   >
                     <div
-                      className={`size-24 rounded-full bg-pkx-surface2 transition-shadow duration-300 max-sm:size-20 ${
+                      className={`${flat ? 'size-[88px]' : 'size-24'} rounded-full bg-pkx-surface2 transition-shadow duration-300 max-sm:size-20 ${
                         current
                           ? 'shadow-[0_0_0_2px_var(--pkx-surface),0_0_0_4px_var(--pkx-ink)]'
                           : ''

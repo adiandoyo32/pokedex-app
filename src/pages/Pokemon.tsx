@@ -7,6 +7,7 @@ import PokexLayout from '@/components/layout/PokexLayout'
 import { ListView } from '@/components/pokedex/Toolbar'
 import FilterBar, { Filters } from '@/components/pokedex/FilterBar'
 import PokemonTable from '@/components/pokedex/PokemonTable'
+import SidebarFilters from '@/components/sidebar/SidebarFilters'
 import {
   EmptyState,
   EndOfList,
@@ -151,7 +152,18 @@ const Pokedex = () => {
   }
 
   return (
-    <PokexLayout view={view} onViewChange={setView} scrollRef={scrollRef}>
+    <PokexLayout
+      view={view}
+      onViewChange={setView}
+      scrollRef={scrollRef}
+      sidebar={
+        <SidebarFilters
+          gen={filters.gen}
+          type={filters.type}
+          onChange={updateFilters}
+        />
+      }
+    >
       <div className="flex items-baseline gap-3">
         <h1 className="m-0 text-[30px] font-black leading-[1.3] tracking-[-0.02em]">
           {favOnly ? 'Favorites' : 'Pokédex'}

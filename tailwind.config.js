@@ -3,6 +3,10 @@ export default {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      screens: {
+        // Wide desktop (design 5d): filters move into a wider sidebar.
+        wide: '1500px'
+      },
       maxWidth: {
         '8xl': '90rem'
       },

@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import PokexLayout from '@/components/layout/PokexLayout'
+import useMediaQuery, { WIDE_QUERY } from '@/hooks/useMediaQuery'
 import DetailNav from '@/components/detail/DetailNav'
 import DetailHero, { DetailHeroHandle } from '@/components/detail/DetailHero'
 import AboutCard from '@/components/detail/AboutCard'
@@ -83,6 +84,8 @@ const PokemonDetail = () => {
   const playedFor = useRef<number | null>(null)
   const prefetch = usePrefetchDetail()
 
+  // Wide desktop uses the flat detail layout (design 5d).
+  const flat = useMediaQuery(WIDE_QUERY)
   const [formIndex, setFormIndex] = useState(0)
   const [shiny, setShiny] = useState(false)
 
@@ -203,7 +206,11 @@ const PokemonDetail = () => {
       description: (species.flavor[0]?.text ?? '').replace(/[\n\f\r]+/g, ' '),
       facts: [
         { label: 'Height', value: `${(form.height / 10).toFixed(1)} m` },
-        { label: 'Weight', value: `${(form.weight / 10).toFixed(1)} kg` },
+        // "100 kg", "6.5 kg" — no trailing ".0" (matches the design).
+        {
+          label: 'Weight',
+          value: `${Number((form.weight / 10).toFixed(1))} kg`
+        },
         { label: 'Catch rate', value: String(species.captureRate) },
         { label: 'Category', value: genus.replace(/ Pokémon$/, '') || '—' },
         { label: 'Region', value: gen?.region ?? '—' },
@@ -246,6 +253,8 @@ const PokemonDetail = () => {
       <div className="flex flex-col gap-5">
         <DetailHero
           ref={heroRef}
+          layout={flat ? 'flat' : 'card'}
+          facts={view.facts}
           speciesId={species.id}
           formId={view.form.id}
           name={view.name}
@@ -266,34 +275,41 @@ const PokemonDetail = () => {
               facts={view.facts}
               abilities={view.abilities}
               genderRate={species.genderRate}
+              flat={flat}
             />
-            <StatsCard stats={view.stats} type={view.types[0] ?? 'normal'} />
+            <StatsCard
+              stats={view.stats}
+              type={view.types[0] ?? 'normal'}
+              flat={flat}
+            />
           </div>
           <div className="grid items-start gap-5 lg:grid-cols-2">
-            <TypeDefensesCard types={view.types} />
+            <TypeDefensesCard types={view.types} flat={flat} />
             <SpritesCard
               formId={view.form.id}
               isBaseForm={view.isBaseForm}
               caption={view.isBaseForm ? 'Base form' : view.name}
+              flat={flat}
             />
           </div>
           {view.chain.length > 0 && (
             <EvolutionCard
               chain={view.chain}
               currentId={species.id}
+              flat={flat}
               onSelect={target =>
                 setDetailTransition({ id: target, kind: 'jump' })
               }
             />
           )}
-          <MovesCard moves={view.moves} />
+          <MovesCard moves={view.moves} flat={flat} />
         </div>
       </div>
     )
   }
 
   return (
-    <PokexLayout scrollRef={scrollRef}>
+    <PokexLayout scrollRef={scrollRef} width="detail">
       <div ref={contentRef}>
         <DetailNav onBack={goBack} onStep={markStep} prev={prev} next={next} />
         {renderContent()}

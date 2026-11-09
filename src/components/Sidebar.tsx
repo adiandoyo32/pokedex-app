@@ -20,7 +20,12 @@ const exploreItems = [
   { label: 'Type chart', icon: <ChartIcon /> }
 ]
 
-const Sidebar = () => {
+type Props = {
+  /** Page-specific sidebar content (list filters), shown on wide screens. */
+  children?: React.ReactNode
+}
+
+const Sidebar: React.FC<Props> = ({ children }) => {
   const location = useLocation()
   const { dark } = usePokexTheme()
   const { ids } = useFavorites()
@@ -32,7 +37,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className="pkx sticky top-0 flex h-screen w-60 flex-none flex-col gap-7 overflow-y-auto border-r border-pkx-line bg-pkx-surface px-3.5 py-6 font-nunito text-pkx-ink transition-colors duration-300 [scrollbar-width:none] max-md:hidden"
+      className="pkx sticky top-0 flex h-screen w-60 flex-none flex-col gap-7 overflow-y-auto border-r border-pkx-line bg-pkx-surface px-3.5 py-6 font-nunito text-pkx-ink transition-colors duration-300 [scrollbar-width:none] max-md:hidden wide:w-[300px]"
       data-theme={dark ? 'dark' : 'light'}
       aria-label="Sidebar navigation"
     >
@@ -72,6 +77,8 @@ const Sidebar = () => {
           />
         ))}
       </div>
+
+      {children && <div className="hidden wide:contents">{children}</div>}
     </aside>
   )
 }

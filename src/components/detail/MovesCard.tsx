@@ -20,7 +20,13 @@ const latestLevelUpMoves = (moves: Pokemon.LevelUpMove[]) => {
     .sort((a, b) => a.level - b.level)
 }
 
-const MovesCard = ({ moves }: { moves: Pokemon.LevelUpMove[] }) => {
+type Props = {
+  moves: Pokemon.LevelUpMove[]
+  /** Flat layout (design 5d): shorter rows. */
+  flat?: boolean
+}
+
+const MovesCard: React.FC<Props> = ({ moves, flat }) => {
   const list = moves.length ? latestLevelUpMoves(moves) : []
 
   return (
@@ -44,7 +50,7 @@ const MovesCard = ({ moves }: { moves: Pokemon.LevelUpMove[] }) => {
           {list.map(({ level, move }) => (
             <div
               key={`${level}:${move.name}`}
-              className={`${COLUMNS} h-[50px] border-b border-pkx-line last:border-b-0`}
+              className={`${COLUMNS} ${flat ? 'h-[46px]' : 'h-[50px]'} border-b border-pkx-line last:border-b-0`}
             >
               <span className="text-sm font-extrabold text-pkx-ink3">
                 {level === 0 ? 'Evo' : level}

@@ -56,66 +56,69 @@ const FilterBar: React.FC<Props> = ({ filters, onChange, onReset }) => {
       <div className="sticky -top-7 z-[9] -mx-8 flex flex-wrap items-center gap-2.5 bg-pkx-bg px-8 pb-3.5 pt-4 transition-colors duration-300 max-md:-top-5 max-md:-mx-4 max-md:px-4 max-md:py-3">
         <SearchField value={filters.q} onChange={q => onChange({ q })} />
 
-        <FilterDropdown
-          label="Generation"
-          value={gen ? `${gen.roman} · ${gen.region}` : 'All'}
-          open={pop === 'gen'}
-          onToggle={() => toggle('gen')}
-          width={456}
-        >
-          <MenuOption active={!filters.gen} onClick={() => pick({ gen: 0 })}>
-            All generations
-          </MenuOption>
-          <MenuGrid>
-            {GENERATIONS.map(g => (
-              <MenuOption
-                key={g.id}
-                variant="stacked"
-                active={filters.gen === g.id}
-                onClick={() => pick({ gen: g.id })}
-              >
-                <span>Gen {g.roman}</span>
-                <span className="text-[11px] font-bold">
-                  {g.region} · {g.range}
-                </span>
-              </MenuOption>
-            ))}
-          </MenuGrid>
-        </FilterDropdown>
-
-        <FilterDropdown
-          label="Type"
-          value={
-            <>
-              {filters.type && <TypeDot color={typeDot(filters.type)} />}
-              {filters.type ? capitalize(filters.type) : 'All'}
-            </>
-          }
-          open={pop === 'type'}
-          onToggle={() => toggle('type')}
-          width={380}
-        >
-          <MenuOption
-            active={!filters.type}
-            onClick={() => pick({ type: null })}
+        {/* On wide screens these two move into the sidebar (SidebarFilters). */}
+        <div className="contents wide:hidden">
+          <FilterDropdown
+            label="Generation"
+            value={gen ? `${gen.roman} · ${gen.region}` : 'All'}
+            open={pop === 'gen'}
+            onToggle={() => toggle('gen')}
+            width={456}
           >
-            All types
-          </MenuOption>
-          <MenuGrid>
-            {POKEMON_TYPES.map(type => (
-              <MenuOption
-                key={type}
-                active={filters.type === type}
-                onClick={() =>
-                  pick({ type: filters.type === type ? null : type })
-                }
-              >
-                <TypeDot color={typeDot(type)} />
-                {capitalize(type)}
-              </MenuOption>
-            ))}
-          </MenuGrid>
-        </FilterDropdown>
+            <MenuOption active={!filters.gen} onClick={() => pick({ gen: 0 })}>
+              All generations
+            </MenuOption>
+            <MenuGrid>
+              {GENERATIONS.map(g => (
+                <MenuOption
+                  key={g.id}
+                  variant="stacked"
+                  active={filters.gen === g.id}
+                  onClick={() => pick({ gen: g.id })}
+                >
+                  <span>Gen {g.roman}</span>
+                  <span className="text-[11px] font-bold">
+                    {g.region} · {g.range}
+                  </span>
+                </MenuOption>
+              ))}
+            </MenuGrid>
+          </FilterDropdown>
+
+          <FilterDropdown
+            label="Type"
+            value={
+              <>
+                {filters.type && <TypeDot color={typeDot(filters.type)} />}
+                {filters.type ? capitalize(filters.type) : 'All'}
+              </>
+            }
+            open={pop === 'type'}
+            onToggle={() => toggle('type')}
+            width={380}
+          >
+            <MenuOption
+              active={!filters.type}
+              onClick={() => pick({ type: null })}
+            >
+              All types
+            </MenuOption>
+            <MenuGrid>
+              {POKEMON_TYPES.map(type => (
+                <MenuOption
+                  key={type}
+                  active={filters.type === type}
+                  onClick={() =>
+                    pick({ type: filters.type === type ? null : type })
+                  }
+                >
+                  <TypeDot color={typeDot(type)} />
+                  {capitalize(type)}
+                </MenuOption>
+              ))}
+            </MenuGrid>
+          </FilterDropdown>
+        </div>
 
         <FilterDropdown
           label="Sort"

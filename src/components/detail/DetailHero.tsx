@@ -1,5 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 import FormPicker, { FormOption } from '@/components/detail/FormPicker'
+import FormButtons from '@/components/detail/FormButtons'
+import HeroFacts, { Fact } from '@/components/detail/HeroFacts'
 import TypeChip from '@/components/pokedex/TypeChip'
 import { HeartIcon, ShinyIcon } from '@/components/icons'
 import useFavorites from '@/hooks/useFavorites'
@@ -9,10 +11,17 @@ import {
   EASE,
   prefersReducedMotion
 } from '@/utils/detail-transition'
-import { heroBackground } from '@/utils/pokex-theme'
+import { heroBackground, typeBar } from '@/utils/pokex-theme'
 import { spriteUrl } from '@/utils/pokemon'
 
 type Props = {
+  /**
+   * `card`: artwork inside a tinted hero card (design 5c).
+   * `flat`: three columns — text, artwork on a disc, Details card (design 5d).
+   */
+  layout?: 'card' | 'flat'
+  /** Shown in the flat layout's Details card. */
+  facts?: Fact[]
   speciesId: number
   formId: number
   name: string
@@ -38,6 +47,8 @@ const SWIPE_THRESHOLD = 60
 const DetailHero = forwardRef<DetailHeroHandle, Props>(
   (
     {
+      layout = 'card',
+      facts = [],
       speciesId,
       formId,
       name,
@@ -198,6 +209,103 @@ const DetailHero = forwardRef<DetailHeroHandle, Props>(
       }
     }
 
+    const dragHandlers = {
+      onPointerDown,
+      onPointerMove,
+      onPointerUp,
+      onPointerCancel: onPointerUp
+    }
+    const artSrc = spriteUrl(formId, shiny ? 'artShiny' : 'art')
+
+    if (layout === 'flat') {
+      return (
+        <div className="grid grid-cols-[minmax(0,1fr)_380px_minmax(0,1fr)] items-center gap-6 pb-7 pt-2">
+          <div ref={textRef} className="flex min-w-0 flex-col gap-[18px]">
+            <div className="flex flex-col gap-1">
+              <span className="text-[15px] font-extrabold tabular-nums text-pkx-ink3">
+                {numLabel}
+              </span>
+              <h1 className="m-0 text-[44px] font-black leading-[1.05] tracking-[-0.03em] [text-wrap:balance]">
+                {name}
+              </h1>
+              <span className="text-base font-bold text-pkx-ink2">{genus}</span>
+            </div>
+            <div className="flex gap-1.5">
+              {types.map(type => (
+                <TypeChip key={type} type={type} size="lg" />
+              ))}
+            </div>
+            {forms.length > 1 && (
+              <FormButtons
+                forms={forms}
+                current={formIndex}
+                onPick={pickForm}
+              />
+            )}
+            <div className="flex gap-2">
+              <button
+                type="button"
+                className={`flex h-11 items-center gap-1.5 rounded-xl border px-[18px] text-sm font-extrabold transition-colors ${
+                  shiny
+                    ? 'border-pkx-ink bg-pkx-ink text-pkx-bg'
+                    : 'border-pkx-line bg-pkx-surface text-pkx-ink'
+                }`}
+                aria-pressed={shiny}
+                onClick={toggleShiny}
+              >
+                <ShinyIcon />
+                {shiny ? 'Shiny' : 'Normal'}
+              </button>
+              <button
+                type="button"
+                className="flex h-11 items-center gap-2 rounded-xl border border-pkx-line bg-pkx-surface pl-3.5 pr-[18px] text-sm font-extrabold text-pkx-ink transition-transform active:scale-95"
+                aria-pressed={fav}
+                onClick={() => toggleFavorite(speciesId)}
+              >
+                <HeartIcon size={18} filled={fav} />
+                {fav ? 'Favorited' : 'Favorite'}
+              </button>
+            </div>
+          </div>
+
+          <div className="relative grid h-[400px] place-items-center">
+            <div
+              ref={bgRef}
+              className="absolute inset-0 m-auto size-[340px] rounded-full transition-[background] duration-[450ms]"
+              style={{ background: heroBackground(types, dark) }}
+            />
+            <svg
+              viewBox="0 0 100 100"
+              className="pointer-events-none absolute inset-0 m-auto size-[380px] rotate-[18deg] opacity-[0.14]"
+              style={{ color: typeBar(types[0] ?? 'normal') }}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              aria-hidden="true"
+            >
+              <circle cx="50" cy="50" r="47" />
+              <path d="M3 50h33M64 50h33" />
+              <circle cx="50" cy="50" r="14" />
+            </svg>
+            <div
+              ref={artRef}
+              className="relative z-[3] size-[320px] cursor-grab touch-pan-y select-none active:cursor-grabbing"
+              {...dragHandlers}
+            >
+              <img
+                src={artSrc}
+                alt={name}
+                draggable={false}
+                className="pointer-events-none size-full object-contain drop-shadow-[0_20px_24px_rgba(0,0,0,0.16)]"
+              />
+            </div>
+          </div>
+
+          <HeroFacts facts={facts} />
+        </div>
+      )
+    }
+
     const ink = dark ? '#ffffff' : 'var(--pkx-ink)'
     const buttonBg = dark ? 'rgba(255,255,255,.1)' : 'rgba(255,255,255,.65)'
 
@@ -252,13 +360,10 @@ const DetailHero = forwardRef<DetailHeroHandle, Props>(
         <div
           ref={artRef}
           className="absolute left-[calc(50%-150px)] top-[70px] z-[3] size-[300px] cursor-grab touch-pan-y select-none active:cursor-grabbing max-md:left-[calc(50%-115px)] max-md:top-[160px] max-md:size-[230px]"
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
+          {...dragHandlers}
         >
           <img
-            src={spriteUrl(formId, shiny ? 'artShiny' : 'art')}
+            src={artSrc}
             alt={name}
             draggable={false}
             className="pointer-events-none size-full object-contain drop-shadow-[0_18px_22px_rgba(0,0,0,0.2)]"
