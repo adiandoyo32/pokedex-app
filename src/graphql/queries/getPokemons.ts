@@ -2,17 +2,17 @@ import { gql } from '@apollo/client'
 
 const GET_POKEMONS = gql`
   query getAllPokemon(
-    $where: pokemon_v2_pokemonspecies_bool_exp
-    $orderBy: [pokemon_v2_pokemonspecies_order_by!]
+    $where: pokemonspecies_bool_exp
+    $orderBy: [pokemonspecies_order_by!]
     $limit: Int
     $offset: Int
   ) {
-    filtered: pokemon_v2_pokemonspecies_aggregate(where: $where) {
+    filtered: pokemonspecies_aggregate(where: $where) {
       aggregate {
         count
       }
     }
-    pokemons: pokemon_v2_pokemonspecies(
+    pokemons: pokemonspecies(
       where: $where
       order_by: $orderBy
       limit: $limit
@@ -20,13 +20,13 @@ const GET_POKEMONS = gql`
     ) {
       name
       id
-      pokemons: pokemon_v2_pokemons(where: { is_default: { _eq: true } }) {
-        types: pokemon_v2_pokemontypes(order_by: { slot: asc }) {
-          type: pokemon_v2_type {
+      pokemons: pokemons(where: { is_default: { _eq: true } }) {
+        types: pokemontypes(order_by: { slot: asc }) {
+          type: type {
             name
           }
         }
-        stats: pokemon_v2_pokemonstats(order_by: { stat_id: asc }) {
+        stats: pokemonstats(order_by: { stat_id: asc }) {
           base_stat
         }
       }
@@ -36,7 +36,7 @@ const GET_POKEMONS = gql`
 
 const GET_POKEMON_COUNT = gql`
   query getPokemonCount {
-    total: pokemon_v2_pokemonspecies_aggregate {
+    total: pokemonspecies_aggregate {
       aggregate {
         count
       }

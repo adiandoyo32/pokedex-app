@@ -91,7 +91,7 @@ const PokemonDetail = () => {
     { variables: { id }, skip: !Number.isInteger(id) }
   )
 
-  const species = data?.species ?? null
+  const species = data?.species[0] ?? null
   const prev = data ? (data.prev[0] ?? data.last[0]) : undefined
   const next = data ? (data.next[0] ?? data.first[0]) : undefined
 

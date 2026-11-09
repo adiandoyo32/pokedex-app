@@ -85,7 +85,7 @@ declare namespace Pokemon {
   }
 
   type Detail = {
-    species: Species | null
+    species: Species[]
     prev: SpeciesRef[]
     next: SpeciesRef[]
     first: SpeciesRef[]

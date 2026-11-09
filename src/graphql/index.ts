@@ -25,8 +25,7 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        // eslint-disable-next-line camelcase
-        pokemon_v2_pokemonspecies: {
+        pokemonspecies: {
           keyArgs: ['where', 'order_by'],
           merge(existing = [], incoming, { args }) {
             const offset = args?.offset ?? 0
@@ -38,7 +37,7 @@ const cache = new InMemoryCache({
   }
 })
 const link = new HttpLink({
-  uri: 'https://beta.pokeapi.co/graphql/v1beta'
+  uri: 'https://graphql.pokeapi.co/v1beta2'
 })
 
 const client = new ApolloClient({

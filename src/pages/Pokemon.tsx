@@ -31,10 +31,10 @@ const buildWhere = (
   if (filters.gen) and.push({ generation_id: { _eq: filters.gen } })
   if (filters.type) {
     and.push({
-      pokemon_v2_pokemons: {
+      pokemons: {
         is_default: { _eq: true },
-        pokemon_v2_pokemontypes: {
-          pokemon_v2_type: { name: { _eq: filters.type } }
+        pokemontypes: {
+          type: { name: { _eq: filters.type } }
         }
       }
     })
